@@ -1,0 +1,151 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
+
+<style>
+    *{
+        margin: 0;
+        box-sizing: border-box;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: 18px;
+    }
+    .store{
+        width: 100%;
+        height: 100vh;
+        background-image: url('https://wallpapercave.com/wp/wp2036897.jpg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+        color: #fff;    
+        z-index: 1;
+    }
+    .store::after{
+        position: absolute;
+        content: "";
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.44);
+        z-index: -1;
+    }
+    input,select{
+        border: none;
+        outline: none;
+        color: black;
+        text-align: left;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    table,tr,td{
+        padding: 10px;
+        margin: 20px auto;
+        border: 3px double #fff;
+        color: #fff;    
+    }
+    .button{
+        background-color: transparent;
+        color: #fff;
+        border: none;
+        outline: none;
+        width: 100%;
+    }
+</style>
+
+<div class="store">
+    <h1 class="text-center">Book Store Details</h1>
+    <form action="/insertData" method="post">
+        <table>
+            <input type="hidden" name="updateId" value="<%= singleData.id %>">
+            <tr>
+                <td>Book Name</td>
+                <td>:-</td>
+                <td>
+                    <input type="text" name="bookname" value="<%= singleData.bookname %>">
+                </td>
+            </tr>
+            <tr>
+                <td>Book Price</td>
+                <td>:-</td>
+                <td>
+                    <input type="text" name="bookprice" value="<%= singleData.bookprice %>">
+                </td>
+            </tr>
+            <tr>
+                <td>Book Pages</td>
+                <td>:-</td>
+                <td>
+                    <select name="bookpages">
+                        <option value="-- Select Pages --">-- Select Pages --</option>
+                        <% let page = ['100',150,200,250,300,350,400,450,500,550,600,650,700,750,800,850,900,950,1000];
+                            for(let i in page){
+                        %>
+                        <option value="<%= page[i] %>" class="text-black" <% if(singleData.bookpages == page[i]){ %> selected <% } %> ><%= page[i] %></option>
+                        <% } %>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Book Author</td>
+                <td>:-</td>
+                <td>
+                    <input type="text" name="bookauthor" value="<%= singleData.bookauthor %>">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <% if(singleData) { %>
+                        <button style="width: 100%;" class="button">Update</button>
+                    <% } else { %>
+    
+                        <button style="width: 100%;" class="button">Submit</button>
+                    <% } %>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <table class="text-center">
+        <tr>
+            <td>#</td>
+            <td>Book Name</td>
+            <td>Book Price</td>
+            <td>Book Pages</td>
+            <td>Book Author</td>
+            <td>Update</td>
+            <td>Remove</td>
+        </tr>
+        <% data.map((val,i)=>{
+            const {bookname,bookprice,bookpages,bookauthor,id} = val;
+            i++;
+        %>
+            <tr>
+                <td><%= i %></td>
+                <td><%= bookname %></td>
+                <td><%= bookprice %></td>
+                <td><%= bookpages %></td>
+                <td><%= bookauthor %></td>
+                <td>
+                    <a href="/updateData?id=<%= id %>" class="text-white btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-pencil-square" viewBox="0 0 16 16">
+                            <path
+                                d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                            <path fill-rule="evenodd"
+                                d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                        </svg>
+                    </a>
+                </td>
+                <td>
+                    <a href="/deleteData/?id=<%= id %>" class="text-white btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
+                        </svg>
+                    </a>
+                </td>
+            </tr>
+        <% }) %>
+    </table>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
